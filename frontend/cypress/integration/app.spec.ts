@@ -63,9 +63,9 @@ describe("Job Portal e2e test", () => {
       const jobs = response.body;
 
       cy.get(".job-detail")
-        .contains(jobs[0].title)
-        .contains(jobs[0].description)
-        .contains(jobs[0].skills.map((skill) => skill.name).join(", "));
+        .should("contain", jobs[0].title)
+        .and("contain", jobs[0].description)
+        .and("contain", jobs[0].skills.map((skill) => skill.name).join(", "));
     });
   });
 });
