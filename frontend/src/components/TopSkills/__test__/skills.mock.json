@@ -1,0 +1,29 @@
+{
+  "skills": [
+    {
+      "id": 1,
+      "name": "react",
+      "count": 18
+    },
+    {
+      "id": 2,
+      "name": "django",
+      "count": 16
+    },
+    {
+      "id": 3,
+      "name": "vue",
+      "count": 13
+    },
+    {
+      "id": 4,
+      "name": "pytest",
+      "count": 11
+    },
+    {
+      "id": 5,
+      "name": "python",
+      "count": 7
+    }
+  ]
+}
