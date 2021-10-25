@@ -3,3 +3,10 @@ export interface Skill {
   name: string;
   count?: number;
 }
+
+export interface SkillState {
+  topSkills: {
+    loading: boolean;
+    data: Skill[];
+  };
+}

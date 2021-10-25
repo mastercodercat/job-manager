@@ -1,10 +1,12 @@
 import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
 
 import jobReducer from "./modules/job";
+import skillReducer from "./modules/skill";
 
 export const store = configureStore({
   reducer: {
     job: jobReducer,
+    skill: skillReducer,
   },
 });
 
