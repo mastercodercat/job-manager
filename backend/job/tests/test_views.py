@@ -90,3 +90,15 @@ class JobViewTest(APITestCase):
         self.assertEqual(response.data['title'], self.job.title)
         self.assertEqual(response.data['description'], self.job.description)
         self.assertEqual(len(response.data['skills']), self.job.skills.count())
+
+    def test_not_approach_update(self):
+        response = self.client.put(
+            reverse(self.detail_url, args=[self.job.id]))
+
+        self.assertEqual(response.status_code, 405)
+
+    def test_not_approach_delete(self):
+        response = self.client.delete(
+            reverse(self.detail_url, args=[self.job.id]))
+
+        self.assertEqual(response.status_code, 405)
