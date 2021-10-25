@@ -3,12 +3,20 @@ import { ToastContainer } from "react-toastify";
 import loadable from "@loadable/component";
 import Grid from "@mui/material/Grid";
 
+import { useAppSelector, useAppDispatch } from "./redux/hooks";
+import { RootState } from "./redux/store";
+import { createJob } from "./redux/modules/job";
+
+import { Job } from "./redux/modules/job/types";
+
 import "./App.css";
 
 const Layout = loadable(() => import("./components/Layout"));
 const JobForm = loadable(() => import("./components/Form/JobForm"));
 
 function App() {
+  const dispatch = useAppDispatch();
+
   const onAddJob = (job: Job) => {
     dispatch(createJob(job));
   };
