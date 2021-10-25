@@ -25,6 +25,13 @@ npm install
 npm start
 ```
 
+or
+
+```
+yarn install
+yarn start
+```
+
 or to build product, run this.
 
 ```
@@ -35,12 +42,14 @@ To run unit tests,
 
 ```
 npm run test
+yarn test
 ```
 
 To run e2e tests,
 
 ```
 npm run e2e
+yarn e2e
 ```
 
 ## Application Architecture
