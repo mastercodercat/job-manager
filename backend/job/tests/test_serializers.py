@@ -1,7 +1,7 @@
 from rest_framework.exceptions import ErrorDetail
 from rest_framework.test import APITestCase
 
-from job.serializers import JobSerializer
+from job.serializers import JobSerializer, SkillSerializer
 
 
 class JobSerializerTest(APITestCase):
@@ -87,4 +87,39 @@ class JobSerializerTest(APITestCase):
             'title': '',
             'description': '',
             'skills': []
+        })
+
+
+class SkillSerializerTest(APITestCase):
+    def setUp(self):
+        self.Serializer = SkillSerializer
+
+    def test_valid_serializer(self):
+        skill = {'name': 'django'}
+        serializer = self.Serializer(data=skill)
+
+        self.assertTrue(serializer.is_valid())
+        self.assertDictEqual(serializer.validated_data, skill)
+        self.assertDictEqual(serializer.data, skill)
+        self.assertDictEqual(serializer.errors, {})
+
+    def test_invalid_serializer_without_field(self):
+        serializer = self.Serializer(data={})
+
+        self.assertFalse(serializer.is_valid())
+        self.assertDictEqual(serializer.errors, {
+            'name': [
+                ErrorDetail(string='This field is required.', code='required')
+            ],
+        })
+
+    def test_invalid_serializer_with_blank_field(self):
+        serializer = self.Serializer(data={'name': ''})
+
+        self.assertFalse(serializer.is_valid())
+        self.assertDictEqual(serializer.errors, {
+            'name': [
+                ErrorDetail(
+                    string='This field may not be blank.', code='blank')
+            ],
         })
