@@ -13,6 +13,12 @@ const initialState: JobState = {
   creating: false,
 };
 
+export const fetchJobs = createAsyncThunk("job/fetchJobs", async () => {
+  const response = await api.fetchJobs();
+
+  return response.data;
+});
+
 export const createJob = createAsyncThunk("job/createJob", async (job: Job) => {
   const response = await api.createJob(job);
 
@@ -25,6 +31,16 @@ export const jobSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
+      .addCase(fetchJobs.pending, (state) => {
+        state.jobs.loading = true;
+      })
+      .addCase(fetchJobs.fulfilled, (state, action) => {
+        state.jobs.data = action.payload;
+        state.jobs.loading = false;
+      })
+      .addCase(fetchJobs.rejected, (state) => {
+        state.jobs.loading = false;
+      })
       .addCase(createJob.pending, (state) => {
         state.creating = true;
       })
