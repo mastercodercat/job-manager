@@ -13,6 +13,8 @@ import { Job } from "./redux/modules/job/types";
 import "./App.css";
 
 const Layout = loadable(() => import("./components/Layout"));
+const AppContainer = loadable(() => import("./components/AppContainer"));
+
 const JobForm = loadable(() => import("./components/Form/JobForm"));
 const JobDetail = loadable(() => import("./components/JobDetail"));
 const JobBoard = loadable(() => import("./components/JobBoard"));
@@ -21,6 +23,9 @@ const TopSkills = loadable(() => import("./components/TopSkills"));
 function App() {
   const jobs = useAppSelector((state: RootState) => state.job.jobs);
   const currentJob = useAppSelector((state: RootState) => state.job.currentJob);
+  const isCreatingJob = useAppSelector(
+    (state: RootState) => state.job.creating
+  );
   const topSkills = useAppSelector((state: RootState) => state.skill.topSkills);
   const dispatch = useAppDispatch();
 
@@ -41,16 +46,28 @@ function App() {
     <Layout>
       <Grid container spacing={2}>
         <Grid item xs={6}>
-          <JobForm onAdd={onAddJob} />
+          <AppContainer
+            isLoading={isCreatingJob}
+            component={<JobForm onAdd={onAddJob} />}
+          />
         </Grid>
         <Grid item xs={6}>
-          <JobDetail job={currentJob.data} />
+          <AppContainer
+            isLoading={currentJob.loading}
+            component={<JobDetail job={currentJob.data} />}
+          />
         </Grid>
         <Grid item xs={4}>
-          <TopSkills skills={topSkills.data} />
+          <AppContainer
+            isLoading={topSkills.loading}
+            component={<TopSkills skills={topSkills.data} />}
+          />
         </Grid>
         <Grid item xs={8}>
-          <JobBoard jobs={jobs.data} onClick={onJob} />
+          <AppContainer
+            isLoading={jobs.loading}
+            component={<JobBoard jobs={jobs.data} onClick={onJob} />}
+          />
         </Grid>
       </Grid>
       <ToastContainer position="top-right" />
