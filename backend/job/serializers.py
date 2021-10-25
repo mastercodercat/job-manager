@@ -3,9 +3,11 @@ from job.models import Job, Skill
 
 
 class SkillSerializer(serializers.ModelSerializer):
+    count = serializers.IntegerField(read_only=True)
+
     class Meta:
         model = Skill
-        fields = ['id', 'name']
+        fields = ['id', 'name', 'count']
 
 
 class JobSerializer(serializers.ModelSerializer):
