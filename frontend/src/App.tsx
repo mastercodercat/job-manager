@@ -1,9 +1,12 @@
 import React from "react";
-import logo from "./logo.svg";
+import loadable from "@loadable/component";
+
 import "./App.css";
 
+const Layout = loadable(() => import("./components/Layout"));
+
 function App() {
-  return <div className="App"></div>;
+  return <Layout></Layout>;
 }
 
 export default App;
