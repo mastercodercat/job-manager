@@ -14,6 +14,7 @@ import "./App.css";
 
 const Layout = loadable(() => import("./components/Layout"));
 const AppContainer = loadable(() => import("./components/AppContainer"));
+const ErrorBoundary = loadable(() => import("./components/ErrorBoundary"));
 
 const JobForm = loadable(() => import("./components/Form/JobForm"));
 const JobDetail = loadable(() => import("./components/JobDetail"));
@@ -43,35 +44,37 @@ function App() {
   };
 
   return (
-    <Layout>
-      <Grid container spacing={2}>
-        <Grid item xs={6}>
-          <AppContainer
-            isLoading={isCreatingJob}
-            component={<JobForm onAdd={onAddJob} />}
-          />
+    <ErrorBoundary>
+      <Layout>
+        <Grid container spacing={2}>
+          <Grid item xs={6}>
+            <AppContainer
+              isLoading={isCreatingJob}
+              component={<JobForm onAdd={onAddJob} />}
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <AppContainer
+              isLoading={currentJob.loading}
+              component={<JobDetail job={currentJob.data} />}
+            />
+          </Grid>
+          <Grid item xs={4}>
+            <AppContainer
+              isLoading={topSkills.loading}
+              component={<TopSkills skills={topSkills.data} />}
+            />
+          </Grid>
+          <Grid item xs={8}>
+            <AppContainer
+              isLoading={jobs.loading}
+              component={<JobBoard jobs={jobs.data} onClick={onJob} />}
+            />
+          </Grid>
         </Grid>
-        <Grid item xs={6}>
-          <AppContainer
-            isLoading={currentJob.loading}
-            component={<JobDetail job={currentJob.data} />}
-          />
-        </Grid>
-        <Grid item xs={4}>
-          <AppContainer
-            isLoading={topSkills.loading}
-            component={<TopSkills skills={topSkills.data} />}
-          />
-        </Grid>
-        <Grid item xs={8}>
-          <AppContainer
-            isLoading={jobs.loading}
-            component={<JobBoard jobs={jobs.data} onClick={onJob} />}
-          />
-        </Grid>
-      </Grid>
-      <ToastContainer position="top-right" />
-    </Layout>
+        <ToastContainer position="top-right" />
+      </Layout>
+    </ErrorBoundary>
   );
 }
 
