@@ -1,15 +1,21 @@
-import React from "react";
-import { render } from "@testing-library/react";
+import { render, screen, RenderResult } from "@testing-library/react";
 import { Provider } from "react-redux";
-import { store } from "./redux/store";
-import App from "./App";
 
-test("renders learn react link", () => {
-  const { getByText } = render(
+import App from "./App";
+import { store } from "./redux/store";
+
+let wrapper: RenderResult;
+
+beforeEach(() => {
+  wrapper = render(
     <Provider store={store}>
       <App />
     </Provider>
   );
+});
 
-  expect(getByText(/learn/i)).toBeInTheDocument();
+describe("App test", () => {
+  it("should render correctly.", () => {
+    expect(wrapper).toMatchSnapshot();
+  });
 });
