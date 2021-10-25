@@ -1,7 +1,11 @@
 import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
 
+import jobReducer from "./modules/job";
+
 export const store = configureStore({
-  reducer: {},
+  reducer: {
+    job: jobReducer,
+  },
 });
 
 export type AppDispatch = typeof store.dispatch;
