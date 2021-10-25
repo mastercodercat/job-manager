@@ -5,7 +5,7 @@ import Grid from "@mui/material/Grid";
 
 import { useAppSelector, useAppDispatch } from "./redux/hooks";
 import { RootState } from "./redux/store";
-import { createJob } from "./redux/modules/job";
+import { fetchJobs, createJob } from "./redux/modules/job";
 
 import { Job } from "./redux/modules/job/types";
 
@@ -13,9 +13,15 @@ import "./App.css";
 
 const Layout = loadable(() => import("./components/Layout"));
 const JobForm = loadable(() => import("./components/Form/JobForm"));
+const JobBoard = loadable(() => import("./components/JobBoard"));
 
 function App() {
+  const jobs = useAppSelector((state: RootState) => state.job.jobs);
   const dispatch = useAppDispatch();
+
+  React.useEffect(() => {
+    dispatch(fetchJobs());
+  }, [dispatch]);
 
   const onAddJob = (job: Job) => {
     dispatch(createJob(job));
@@ -34,7 +40,7 @@ function App() {
           Most used skills
         </Grid>
         <Grid item xs={8}>
-          Job board
+          <JobBoard jobs={jobs.data} onClick={() => {}} />
         </Grid>
       </Grid>
       <ToastContainer position="top-right" />
