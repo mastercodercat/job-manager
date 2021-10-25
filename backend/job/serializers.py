@@ -1,3 +1,4 @@
+from django.core.exceptions import MultipleObjectsReturned
 from rest_framework import serializers
 from job.models import Job, Skill
 
@@ -18,14 +19,21 @@ class JobSerializer(serializers.ModelSerializer):
         fields = ['id', 'title', 'description', 'skills']
 
     def create(self, validated_data):
-        skills_data = validated_data.pop('skills')
+        try:
+            skills_data = validated_data.pop('skills')
+        except KeyError:
+            skills_data = []
         job = Job.objects.create(**validated_data)
 
         for skill_data in skills_data:
-            if not skill_data['name']:
+            try:
+                skill, created = Skill.objects.get_or_create(
+                    name=skill_data['name'])
+            except MultipleObjectsReturned:
                 continue
-            skill, created = Skill.objects.get_or_create(
-                name=skill_data['name'])
+            except KeyError:
+                continue
+
             job.skills.add(skill)
 
         return job
