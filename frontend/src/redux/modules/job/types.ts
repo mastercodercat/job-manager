@@ -12,6 +12,10 @@ export interface JobState {
     loading: boolean;
     data: Required<Job>[];
   };
+  currentJob: {
+    loading: boolean;
+    data: Job;
+  };
   creating: boolean;
 }
 

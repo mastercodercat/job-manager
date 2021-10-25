@@ -10,6 +10,14 @@ const initialState: JobState = {
     loading: false,
     data: [],
   },
+  currentJob: {
+    loading: false,
+    data: {
+      title: "",
+      description: "",
+      skills: [],
+    },
+  },
   creating: false,
 };
 
@@ -18,6 +26,15 @@ export const fetchJobs = createAsyncThunk("job/fetchJobs", async () => {
 
   return response.data;
 });
+
+export const fetchJobDetail = createAsyncThunk(
+  "job/fetchJobDetail",
+  async (index: number) => {
+    const response = await api.fetchJobDetail(index);
+
+    return response.data;
+  }
+);
 
 export const createJob = createAsyncThunk("job/createJob", async (job: Job) => {
   const response = await api.createJob(job);
@@ -40,6 +57,16 @@ export const jobSlice = createSlice({
       })
       .addCase(fetchJobs.rejected, (state) => {
         state.jobs.loading = false;
+      })
+      .addCase(fetchJobDetail.pending, (state) => {
+        state.currentJob.loading = true;
+      })
+      .addCase(fetchJobDetail.fulfilled, (state, action) => {
+        state.currentJob.data = action.payload;
+        state.currentJob.loading = false;
+      })
+      .addCase(fetchJobDetail.rejected, (state) => {
+        state.currentJob.loading = false;
       })
       .addCase(createJob.pending, (state) => {
         state.creating = true;

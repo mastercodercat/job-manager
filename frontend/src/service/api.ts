@@ -18,6 +18,7 @@ axiosInstance.interceptors.response.use(
 
 const api = {
   fetchJobs: () => axiosInstance.get<Required<Job>[]>("/jobs/"),
+  fetchJobDetail: (index: number) => axiosInstance.get<Job>(`/jobs/${index}/`),
   createJob: (job: Job) => axiosInstance.post<Required<Job>>("/jobs/", job),
 };
 
