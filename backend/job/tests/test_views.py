@@ -102,3 +102,39 @@ class JobViewTest(APITestCase):
             reverse(self.detail_url, args=[self.job.id]))
 
         self.assertEqual(response.status_code, 405)
+
+
+class SkillViewTest(APITestCase):
+    def setUp(self):
+        self.url = reverse('jobs:skill-list')
+        self.create_job(skills=[
+            {'name': 'django'},
+            {'name': 'react'},
+            {'name': 'redux'},
+            {'name': 'react-hook'},
+            {'name': 'django-rest-framework'},
+            {'name': 'pytest'},
+        ])
+        self.create_job(skills=[
+            {'name': 'django'},
+            {'name': 'react'},
+            {'name': 'redux'},
+            {'name': 'graphql'},
+            {'name': 'mobx'},
+        ])
+
+    def create_job(self, title="Job title", description="Job description", skills=[]):
+        job = Job.objects.create(title=title, description=description)
+
+        for skill in skills:
+            skill_object, created = Skill.objects.get_or_create(name=skill)
+            job.skills.add(skill_object)
+
+        return job
+
+    def test_top_skills(self):
+        response = self.client.get(self.url)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.data), 5)
+        self.assertTrue(response.data[0]['count'] >= response.data[1]['count'])
