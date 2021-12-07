@@ -1,4 +1,4 @@
-# Harness Test Job Manager
+# Job Manager
 
 Offer users the ability to post and manage their jobs for their startups.
 
